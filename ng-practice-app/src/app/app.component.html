@@ -1,1 +1,9 @@
-<app-header></app-header>
+<app-header (navSelect)="switchTabs($event)" [activeTab]='activeTab'></app-header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <app-recipes *ngIf="activeTab === 'r'"></app-recipes>
+      <app-shopping-list *ngIf="activeTab !== 'r'"></app-shopping-list>
+    </div>
+  </div>
+</div>

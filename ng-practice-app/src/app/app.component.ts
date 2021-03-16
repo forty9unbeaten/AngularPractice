@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ng-practice-app';
+  activeTab = 'r';
+
+  switchTabs = (tab: string): void => {
+    this.activeTab = tab;
+  }
 }
