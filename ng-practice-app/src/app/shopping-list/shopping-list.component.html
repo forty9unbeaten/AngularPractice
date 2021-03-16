@@ -1,1 +1,23 @@
-<p>shopping-list works!</p>
+<div class="row">
+  <div class="col-xs-10">
+    <app-shopping-edit
+      (addIngredient)="onIngredientAdded($event)"
+      (deleteIngredient)="onIngredientDeleted($event)"
+      [selectedIngredient]="selectedIngredient"
+    ></app-shopping-edit>
+    <hr />
+    <ul class="list-group">
+      <a
+        class="list-group-item"
+        style="cursor: pointer"
+        *ngFor="let ing of ingredients"
+        (click)="selectIngredient(ing)"
+        [ngStyle]="{
+          'background-color': ing === selectedIngredient ? '#f5f5f5' : ''
+        }"
+      >
+        {{ ing.name }} ({{ ing.quantity }})
+      </a>
+    </ul>
+  </div>
+</div>
