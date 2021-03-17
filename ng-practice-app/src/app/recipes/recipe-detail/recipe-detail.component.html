@@ -14,12 +14,25 @@
     />
   </div>
 </div>
-<div class="row">
+<div class="row" style="margin-top: 10px">
   <div class="col-xs-12">
-    <div class="btn-group-xs" style="margin-top: 10px">
-      <button class="btn btn-success">Add to Shopping List</button>
-      <button class="btn btn-primary">Edit Recipe</button>
-      <button class="btn btn-danger">Delete Recipe</button>
+    <div class="btn-group">
+      <button class="btn btn-info">Recipe Options</button>
+      <button
+        class="btn btn-info dropdown-toggle"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <span class="caret"></span>
+        <span class="sr-only">Open Dropdown</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">Edit Recipe</a></li>
+        <li><a href="#">Detele Recipe</a></li>
+        <li class="divider" role="separator"></li>
+        <li><a href="#">Add to Shopping List</a></li>
+      </ul>
     </div>
   </div>
 </div>
