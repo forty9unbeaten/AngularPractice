@@ -1,0 +1,5 @@
+.noClick:hover {
+    cursor: default;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
