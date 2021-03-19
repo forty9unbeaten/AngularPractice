@@ -17,22 +17,24 @@
 <div class="row" style="margin-top: 20px">
   <div class="col-xs-12">
     <div class="btn-group">
+      <div class="btn-group" appDropdownToggle>
+        <button
+          class="btn btn-info dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span class="caret"></span>
+          <span class="sr-only">Open Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Edit Recipe</a></li>
+          <li><a href="#">Detele Recipe</a></li>
+          <li class="divider" role="separator"></li>
+          <li><a href="#">Add to Shopping List</a></li>
+        </ul>
+      </div>
       <button class="btn btn-info noClick">Recipe Options</button>
-      <button
-        class="btn btn-info dropdown-toggle"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        <span class="caret"></span>
-        <span class="sr-only">Open Dropdown</span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Edit Recipe</a></li>
-        <li><a href="#">Detele Recipe</a></li>
-        <li class="divider" role="separator"></li>
-        <li><a href="#">Add to Shopping List</a></li>
-      </ul>
     </div>
   </div>
 </div>
