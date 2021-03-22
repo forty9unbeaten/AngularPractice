@@ -23,7 +23,7 @@ export class RecipesService {
   constructor(private shoppingList: ShoppingListService) { }
 
   public getRecipes = (): Recipe[] => {
-    return this.recipes.slice();
+    return this.recipes;
   }
 
   public getSelectedRecipe = (): Recipe => {

@@ -24,7 +24,7 @@ export class ShoppingListService {
   }
 
   public getIngredientList = (): Ingredient[] => {
-    return this.ingredients.slice();
+    return this.ingredients;
   }
 
   public addIngredient = (ingredient: Ingredient): void => {
