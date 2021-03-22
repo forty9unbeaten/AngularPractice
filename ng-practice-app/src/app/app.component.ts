@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { RecipesService } from './services/recipes.service';
+import { Component, OnInit } from '@angular/core';
 import { ShoppingListService } from './services/shopping-list.service';
 
 @Component({
@@ -8,12 +7,14 @@ import { ShoppingListService } from './services/shopping-list.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   public title = 'ng-practice-app';
   public activeTab = 'r';
 
-  constructor(private recipesService: RecipesService) {
-    this.recipesService.switchToShoppingList.subscribe(() => {
+  constructor(private shoppingList: ShoppingListService) {}
+
+  ngOnInit(): void {
+    this.shoppingList.navToShoppingList.subscribe(() => {
       this.activeTab = 's';
     });
   }
