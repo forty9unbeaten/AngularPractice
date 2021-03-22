@@ -29,9 +29,11 @@
         </button>
         <ul class="dropdown-menu">
           <li><a href="#">Edit Recipe</a></li>
-          <li><a href="#">Detele Recipe</a></li>
+          <li><a href="#" (click)="onDeleteRecipe()">Detele Recipe</a></li>
           <li class="divider" role="separator"></li>
-          <li><a href="#">Add to Shopping List</a></li>
+          <li>
+            <a href="#" (click)="onAddToShoppingList()">Add to Shopping List</a>
+          </li>
         </ul>
       </div>
       <button class="btn btn-info noClick">Recipe Options</button>
@@ -46,7 +48,7 @@
 <div class="row">
   <div class="col-xs-12">
     <h4>Ingredients</h4>
-    <li *ngFor="let ingredient of recipe.ingrediets">
+    <li *ngFor="let ingredient of recipe.ingredients">
       {{ ingredient.name }} ({{ ingredient.quantity }})
     </li>
   </div>
