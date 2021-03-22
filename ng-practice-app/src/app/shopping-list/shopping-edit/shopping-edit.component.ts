@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Output, Input, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
 import { Ingredient } from 'src/app/models/ingredient.model';
+import { ShoppingListService } from 'src/app/services/shopping-list.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -7,25 +8,24 @@ import { Ingredient } from 'src/app/models/ingredient.model';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  @Output() addIngredient = new EventEmitter<Ingredient>();
-  @Output() deleteIngredient = new EventEmitter<Ingredient>();
-  @Input() selectedIngredient: Ingredient;
-  @ViewChild('deleteButton') deleteButton: ElementRef;
-  @ViewChild('addButton') addButton: ElementRef;
+  public ingName = '';
+  public ingQuantity = 0;
+  public disabledDelete = true;
 
-  ingName = '';
-  ingQuantity = 0;
-
-  constructor() { }
+  constructor(private shoppingList: ShoppingListService) {
+    this.shoppingList.newIngredientSelected.subscribe(() => {
+      this.disabledDelete = !this.shoppingList.getSelectedIngredient();
+    });
+  }
 
   ngOnInit(): void {
   }
 
-  validClear = (): boolean => {
+  validateClear = (): boolean => {
     return this.ingName !== '' || this.ingQuantity !== 0 ? true : false;
   }
 
-  validAdd = (): boolean => {
+  validateAdd = (): boolean => {
     return this.ingName !== '' && this.ingQuantity !== 0 ? true : false ;
   }
 
@@ -35,15 +35,14 @@ export class ShoppingEditComponent implements OnInit {
   }
 
   onAddIngredient = (): void => {
-    this.addIngredient.emit(
+    this.shoppingList.addIngredient(
       new Ingredient(this.ingName, this.ingQuantity)
     );
     this.clearInputs();
-    this.addButton.nativeElement.disabled = true;
   }
 
-  onDeleteIngredient = (ingredient: Ingredient): void => {
-    this.deleteIngredient.emit(ingredient);
-    this.deleteButton.nativeElement.disabled = true;
+  onDeleteIngredient = (ingredient: Ingredient = this.shoppingList.getSelectedIngredient()): void => {
+    this.shoppingList.deleteIngredient(ingredient);
+    this.disabledDelete = true;
   }
 }

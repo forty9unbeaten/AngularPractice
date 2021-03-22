@@ -1,10 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <app-shopping-edit
-      (addIngredient)="onIngredientAdded($event)"
-      (deleteIngredient)="onIngredientDeleted($event)"
-      [selectedIngredient]="selectedIngredient"
-    ></app-shopping-edit>
+    <app-shopping-edit></app-shopping-edit>
     <hr />
     <div class="col-xs-4">
       <ul class="list-group">
@@ -12,10 +8,7 @@
           class="list-group-item"
           style="cursor: pointer"
           *ngFor="let ing of ingredients"
-          (click)="selectIngredient(ing)"
-          [ngStyle]="{
-            'background-color': ing === selectedIngredient ? '#f5f5f5' : ''
-          }"
+          (click)="selectIngredient(ing, $event)"
         >
           {{ ing.name }} ({{ ing.quantity }})
         </a>

@@ -32,25 +32,23 @@
             <button
               class="btn btn-success"
               type="submit"
-              [disabled]="!validAdd()"
+              [disabled]="!validateAdd()"
               (click)="onAddIngredient()"
-              #addButton
             >
               Add
             </button>
             <button
               class="btn btn-danger"
               type="button"
-              [disabled]="!selectedIngredient"
-              (click)="onDeleteIngredient(selectedIngredient)"
-              #deleteButton
+              [disabled]="disabledDelete"
+              (click)="onDeleteIngredient()"
             >
               Delete
             </button>
             <button
               class="btn btn-primary"
               type="button"
-              [disabled]="!validClear()"
+              [disabled]="!validateClear()"
               (click)="clearInputs()"
             >
               Clear

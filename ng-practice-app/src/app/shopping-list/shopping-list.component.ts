@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import {Ingredient} from '../models/ingredient.model';
+import { ShoppingListService } from '../services/shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -7,30 +8,26 @@ import {Ingredient} from '../models/ingredient.model';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit {
-  ingredients: Ingredient[] = [
-    new Ingredient('tomato', 10),
-    new Ingredient('lettuce', 14)
-  ];
-  selectedIngredient: Ingredient;
+  public ingredients: Ingredient[];
+  private lastSelected: EventTarget;
 
-  constructor() { }
+  constructor(private shoppingList: ShoppingListService, private renderer: Renderer2) {
+    this.ingredients = this.shoppingList.getIngredientList();
+  }
 
   ngOnInit(): void {
   }
 
-  onIngredientAdded = (ingredient: Ingredient): void => {
-    this.ingredients.push(ingredient);
-  }
-
-  selectIngredient = (ingredient: Ingredient): void => {
-    this.selectedIngredient = ingredient;
-  }
-
-  onIngredientDeleted = (ingredient: Ingredient): void => {
-    this.ingredients.splice(
-      this.ingredients.indexOf(ingredient),
-      1
-    );
+  selectIngredient = (ingredient: Ingredient, evt: Event): void => {
+    this.shoppingList.setSelectedIngredient(ingredient);
+    if (evt.target === this.lastSelected && this.shoppingList.getIngredientList().length > 1) {
+      this.renderer.removeClass(evt.target, 'selected')
+    }
+    if (this.lastSelected) {
+      this.renderer.removeClass(this.lastSelected, 'selected');
+    }
+    this.renderer.addClass(evt.target, 'selected');
+    this.lastSelected = evt.target;
   }
 
 }
