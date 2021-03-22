@@ -11,6 +11,8 @@ export class ShoppingListService {
   ];
   private selectedIngredient: Ingredient;
   public newIngredientSelected = new EventEmitter();
+  public ingredientsChanged = new EventEmitter<Ingredient[]>();
+  public navToShoppingList = new EventEmitter();
 
   constructor() { }
 
@@ -24,14 +26,25 @@ export class ShoppingListService {
   }
 
   public getIngredientList = (): Ingredient[] => {
-    return this.ingredients;
+    return this.ingredients.slice();
   }
 
-  public addIngredient = (ingredient: Ingredient): void => {
-    this.ingredients.push(ingredient);
+  public addIngredients = (ingredients: Ingredient[]): void => {
+    ingredients.forEach(newIngredient => {
+      const existingIngredient = this.ingredients.find(existing =>
+        existing.name.toLowerCase().trim() === newIngredient.name.toLowerCase().trim()
+      );
+      if (!existingIngredient) {
+        this.ingredients.push(newIngredient);
+      } else {
+        existingIngredient.quantity += newIngredient.quantity;
+      }
+    });
+    this.ingredientsChanged.emit(this.ingredients.slice());
   }
 
   public deleteIngredient = (ingredient: Ingredient): void => {
-    this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
+    this.ingredients = this.ingredients.filter(ing => ing !== ingredient);
+    this.ingredientsChanged.emit(this.ingredients.slice());
   }
 }
