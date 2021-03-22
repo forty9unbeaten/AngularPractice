@@ -1,0 +1,4 @@
+.selected, .selected:hover {
+    color: white;
+    background-color: dodgerblue;
+}
