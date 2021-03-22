@@ -12,13 +12,12 @@ export class ShoppingEditComponent implements OnInit {
   public ingQuantity = 0;
   public disabledDelete = true;
 
-  constructor(private shoppingList: ShoppingListService) {
+  constructor(private shoppingList: ShoppingListService) {}
+
+  ngOnInit(): void {
     this.shoppingList.newIngredientSelected.subscribe(() => {
       this.disabledDelete = !this.shoppingList.getSelectedIngredient();
     });
-  }
-
-  ngOnInit(): void {
   }
 
   validateClear = (): boolean => {
@@ -35,8 +34,8 @@ export class ShoppingEditComponent implements OnInit {
   }
 
   onAddIngredient = (): void => {
-    this.shoppingList.addIngredient(
-      new Ingredient(this.ingName, this.ingQuantity)
+    this.shoppingList.addIngredients(
+      [new Ingredient(this.ingName, this.ingQuantity)]
     );
     this.clearInputs();
   }
