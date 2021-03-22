@@ -19,10 +19,8 @@ export class ShoppingListService {
   }
 
   public setSelectedIngredient = (ingredient: Ingredient): void => {
-    if (ingredient !== this.selectedIngredient) {
-      this.selectedIngredient = ingredient;
-      this.newIngredientSelected.emit();
-    }
+    this.selectedIngredient = ingredient;
+    this.newIngredientSelected.emit();
   }
 
   public getIngredientList = (): Ingredient[] => {
