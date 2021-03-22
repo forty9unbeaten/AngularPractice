@@ -1,7 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Recipe } from '../models/recipe.model';
 import { Ingredient } from '../models/ingredient.model';
-import { ShoppingListService } from './shopping-list.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +16,14 @@ export class RecipesService {
   ];
   private selectedRecipe: Recipe;
   public newRecipeSelected = new EventEmitter();
+  public recipesChanged = new EventEmitter<Recipe[]>();
   public recipeDeleted = new EventEmitter();
   public switchToShoppingList = new EventEmitter();
 
-  constructor(private shoppingList: ShoppingListService) { }
+  constructor() { }
 
   public getRecipes = (): Recipe[] => {
-    return this.recipes;
+    return this.recipes.slice();
   }
 
   public getSelectedRecipe = (): Recipe => {
@@ -37,17 +37,12 @@ export class RecipesService {
 
   public addRecipe = (recipe: Recipe): void => {
     this.recipes.push(recipe);
+    this.recipesChanged.emit(this.recipes.slice());
   }
 
   public deleteRecipe = (recipe: Recipe): void => {
-    this.recipes.splice(this.recipes.indexOf(recipe), 1);
+    this.recipes = this.recipes.filter(existingRecipe => existingRecipe !== recipe);
+    this.recipesChanged.emit(this.recipes.slice());
     this.recipeDeleted.emit();
-  }
-
-  public addIngredients = (ingredients: Ingredient[]): void => {
-    ingredients.forEach(ingredient => {
-      this.shoppingList.addIngredient(ingredient);
-    });
-    this.switchToShoppingList.emit();
   }
 }
