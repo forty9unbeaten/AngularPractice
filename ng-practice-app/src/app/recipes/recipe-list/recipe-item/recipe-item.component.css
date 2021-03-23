@@ -1,0 +1,11 @@
+a.list-group-item.selected {
+    background-color: dodgerblue;
+}
+
+a.list-group-item.selected h4 {
+    color: white;
+}
+
+a.list-group-item.selected p {
+    color: #eeeded;
+}
