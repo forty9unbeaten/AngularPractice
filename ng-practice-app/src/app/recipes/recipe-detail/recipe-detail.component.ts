@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Params, Router} from '@angular/router';
 import { Recipe } from 'src/app/models/recipe.model';
 import { RecipesService } from 'src/app/services/recipes.service';
 import { ShoppingListService } from 'src/app/services/shopping-list.service';
@@ -19,8 +19,10 @@ export class RecipeDetailComponent implements OnInit {
     private currentRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.recipe = this.recipesService.getSelectedRecipe(
-      Number(this.currentRoute.snapshot.params.id)
+    // tslint:disable-next-line: deprecation
+    this.currentRoute.params.subscribe((params: Params) => {
+        this.recipe = this.recipesService.getSelectedRecipe(Number(params.id));
+      }
     );
   }
 
