@@ -13,6 +13,8 @@ import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-ed
 import { DropdownToggleDirective } from './directives/dropdown-toggle.directive';
 import { RoutingModule } from './routing/routing.module';
 import { Error404Component } from './error404/error404.component';
+import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { RecipeHomeComponent } from './recipes/recipe-home/recipe-home.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { Error404Component } from './error404/error404.component';
     ShoppingEditComponent,
     DropdownToggleDirective,
     Error404Component,
+    RecipeEditComponent,
+    RecipeHomeComponent,
   ],
   imports: [
     BrowserModule,
