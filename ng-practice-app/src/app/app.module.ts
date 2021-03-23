@@ -11,8 +11,7 @@ import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-it
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { DropdownToggleDirective } from './directives/dropdown-toggle.directive';
-
-
+import { RoutingModule } from './routing/routing.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +28,8 @@ import { DropdownToggleDirective } from './directives/dropdown-toggle.directive'
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
