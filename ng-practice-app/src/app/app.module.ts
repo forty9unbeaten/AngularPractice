@@ -12,6 +12,7 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { DropdownToggleDirective } from './directives/dropdown-toggle.directive';
 import { RoutingModule } from './routing/routing.module';
+import { Error404Component } from './error404/error404.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { RoutingModule } from './routing/routing.module';
     ShoppingListComponent,
     ShoppingEditComponent,
     DropdownToggleDirective,
+    Error404Component,
   ],
   imports: [
     BrowserModule,
