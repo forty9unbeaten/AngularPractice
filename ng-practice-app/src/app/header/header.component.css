@@ -1,9 +1,13 @@
-.navbar-brand, .navbar-brand:hover {
+.navbar-brand, .navbar-brand:hover, .navbar-brand:focus {
     color: dodgerblue;
-    text-decoration: underline;
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-shadow: 0 0 2px grey;
 }
 
-.selected {
-    font-weight: bold
+.nav.navbar-nav .navLink.selected {
+    font-weight: bold;
+    color: black;
+}
+
+.dataManage a {
+    cursor: pointer;
 }

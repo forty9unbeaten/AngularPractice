@@ -5,11 +5,16 @@
     </div>
     <div class="navbar-default">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="selected">
-          <a routerLink="/recipes">Recipes</a>
+        <li>
+          <a class="navLink" routerLinkActive="selected" routerLink="/recipes"
+            >Recipes</a
+          >
         </li>
         <li>
-          <a routerLink="/shopping-list" routerLinkActive="selected"
+          <a
+            class="navLink"
+            routerLink="/shopping-list"
+            routerLinkActive="selected"
             >Shopping List</a
           >
         </li>
@@ -25,7 +30,7 @@
           >
             <span class="caret"></span> Manage
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu dataManage">
             <li><a>Save Data</a></li>
             <li><a>Fetch Data</a></li>
           </ul>
