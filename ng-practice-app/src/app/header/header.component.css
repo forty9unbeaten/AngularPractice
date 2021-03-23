@@ -1,0 +1,9 @@
+.navbar-brand, .navbar-brand:hover {
+    color: dodgerblue;
+    text-decoration: underline;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.selected {
+    font-weight: bold
+}

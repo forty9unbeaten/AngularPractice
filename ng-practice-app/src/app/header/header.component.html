@@ -1,23 +1,15 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a href="#" class="navbar-brand">Recipe Book</a>
+      <a class="navbar-brand" routerLink="/">Recipe Book</a>
     </div>
     <div class="navbar-default">
       <ul class="nav navbar-nav">
-        <li>
-          <a
-            href="#"
-            (click)="onNavigate('r')"
-            [ngStyle]="activeTab === 'r' ? activeStyle() : ''"
-            >Recipes</a
-          >
+        <li routerLinkActive="selected">
+          <a routerLink="/recipes">Recipes</a>
         </li>
         <li>
-          <a
-            href="#"
-            (click)="onNavigate('s')"
-            [ngStyle]="activeTab !== 'r' ? activeStyle() : ''"
+          <a routerLink="/shopping-list" routerLinkActive="selected"
             >Shopping List</a
           >
         </li>
@@ -25,7 +17,6 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" role="presentation" appDropdownToggle>
           <a
-            href="#"
             class="dropdown-toggle"
             data-toggle="dropdown"
             role="button"
@@ -35,8 +26,8 @@
             <span class="caret"></span> Manage
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#">Save Data</a></li>
-            <li><a href="#">Fetch Data</a></li>
+            <li><a>Save Data</a></li>
+            <li><a>Fetch Data</a></li>
           </ul>
         </li>
       </ul>
