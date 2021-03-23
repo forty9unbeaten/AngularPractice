@@ -9,17 +9,9 @@ import { ShoppingListService } from './services/shopping-list.service';
 
 export class AppComponent implements OnInit {
   public title = 'ng-practice-app';
-  public activeTab = 'r';
 
-  constructor(private shoppingList: ShoppingListService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.shoppingList.navToShoppingList.subscribe(() => {
-      this.activeTab = 's';
-    });
-  }
-
-  switchTabs = (tab: string): void => {
-    this.activeTab = tab;
   }
 }
