@@ -12,7 +12,6 @@ export class ShoppingListService {
   private selectedIngredient: Ingredient;
   public newIngredientSelected = new EventEmitter();
   public ingredientsChanged = new EventEmitter<Ingredient[]>();
-  public navToShoppingList = new EventEmitter();
 
   constructor() { }
 
