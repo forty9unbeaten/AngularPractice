@@ -1,4 +1,5 @@
-import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { ShoppingListService } from 'src/app/services/shopping-list.service';
 
@@ -7,17 +8,22 @@ import { ShoppingListService } from 'src/app/services/shopping-list.service';
   templateUrl: './shopping-edit.component.html',
   styleUrls: ['./shopping-edit.component.css']
 })
-export class ShoppingEditComponent implements OnInit {
+export class ShoppingEditComponent implements OnInit, OnDestroy {
   public ingName = '';
   public ingQuantity = 0;
   public disabledDelete = true;
+  private ingredientSub: Subscription;
 
   constructor(private shoppingList: ShoppingListService) {}
 
   ngOnInit(): void {
-    this.shoppingList.newIngredientSelected.subscribe(() => {
+    this.ingredientSub = this.shoppingList.newIngredientSelected.subscribe(() => {
       this.disabledDelete = !this.shoppingList.getSelectedIngredient();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.ingredientSub.unsubscribe();
   }
 
   validateClear = (): boolean => {
@@ -35,7 +41,7 @@ export class ShoppingEditComponent implements OnInit {
 
   onAddIngredient = (): void => {
     this.shoppingList.addIngredients(
-      [new Ingredient(this.ingName, this.ingQuantity)]
+      [new Ingredient(this.ingName, this.ingQuantity, "lb")]
     );
     this.clearInputs();
   }

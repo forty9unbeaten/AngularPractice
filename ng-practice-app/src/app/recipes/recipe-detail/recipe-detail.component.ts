@@ -1,39 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router} from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { Recipe } from 'src/app/models/recipe.model';
 import { RecipesService } from 'src/app/services/recipes.service';
 import { ShoppingListService } from 'src/app/services/shopping-list.service';
 
 @Component({
-  selector: 'app-recipe-detail',
-  templateUrl: './recipe-detail.component.html',
-  styleUrls: ['./recipe-detail.component.css']
+	selector: 'app-recipe-detail',
+	templateUrl: './recipe-detail.component.html',
+	styleUrls: ['./recipe-detail.component.css']
 })
-export class RecipeDetailComponent implements OnInit {
-  public recipe: Recipe;
+export class RecipeDetailComponent implements OnInit, OnDestroy {
+	public recipe: Recipe;
+	private routeSub: Subscription;
+	
+	constructor(
+		private recipesService: RecipesService,
+		private shoppingList: ShoppingListService,
+		private router: Router,
+		private currentRoute: ActivatedRoute) {}
 
-  constructor(
-    private recipesService: RecipesService,
-    private shoppingList: ShoppingListService,
-    private router: Router,
-    private currentRoute: ActivatedRoute) {}
+	ngOnInit(): void {
+		this.routeSub = this.currentRoute.params.subscribe((params: Params) => {
+			this.recipe = this.recipesService.getSelectedRecipe(Number(params.id));
+		});
+	}
 
-  ngOnInit(): void {
-    // tslint:disable-next-line: deprecation
-    this.currentRoute.params.subscribe((params: Params) => {
-        this.recipe = this.recipesService.getSelectedRecipe(Number(params.id));
-      }
-    );
-  }
+	ngOnDestroy(): void {
+		this.routeSub.unsubscribe();
+	}
 
-  public onDeleteRecipe = (): void => {
-    this.recipesService.deleteRecipe(this.recipe);
-    this.router.navigate(['/recipes']);
-  }
+	public onDeleteRecipe = (): void => {
+		this.recipesService.deleteRecipe(this.recipe);
+		this.router.navigate(['/recipes']);
+	}
 
-  public onAddToShoppingList = (): void => {
-    this.shoppingList.addIngredients(this.recipe.ingredients);
-    this.router.navigate(['/shopping-list']);
-  }
+	public onAddToShoppingList = (): void => {
+		this.shoppingList.addIngredients(this.recipe.ingredients);
+		this.router.navigate(['/shopping-list']);
+	}
 
 }
