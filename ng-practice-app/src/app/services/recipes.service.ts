@@ -1,6 +1,7 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Recipe } from '../models/recipe.model';
 import { Ingredient } from '../models/ingredient.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +9,15 @@ import { Ingredient } from '../models/ingredient.model';
 export class RecipesService {
   private recipes: Recipe[] = [
     new Recipe(
-      1,
       'Enchiladas',
-      `Delicious Enchiladas...`,
+      `Tasty enchiladas with red sauce. Just like your abuela used to make!`,
       'https://www.yellowblissroad.com/wp-content/uploads/2020/02/Ground-Beef-Enchiladas-social.jpg',
-      [new Ingredient('Tortillas', 2), new Ingredient('Beef (1LB)', 1)]
+      [new Ingredient('Tortillas', 2, 'Packs'), new Ingredient('Beef', 1, 'Pound')]
     )
   ];
+
+  public recipesChanged = new Subject<Recipe[]>();
   private generatedId = this.recipes.slice(-1)[0].id + 1;
-  public recipesChanged = new EventEmitter<Recipe[]>();
-  public switchToShoppingList = new EventEmitter();
 
   constructor() {
   }
@@ -28,29 +28,29 @@ export class RecipesService {
 
   public setRecipeList = (recipes: Recipe[]): void => {
     this.recipes = recipes;
-    this.recipesChanged.emit(this.recipes.slice());
+    this.recipesChanged.next(this.recipes.slice());
   }
 
   public getSelectedRecipe = (id: number): Recipe => {
     return this.recipes.find(recipe => recipe.id === id);
   }
 
-  public addRecipe = (name: string, description: string, imgPath: string, ingredients: Ingredient[]): void => {
-    this.recipes.push(
-      new Recipe(
-        this.generatedId,
-        name,
-        description,
-        imgPath,
-        ingredients
-      )
-    );
+  public addRecipe = (recipe: Recipe): void => {
+    recipe.id = this.generatedId;
+    this.recipes.push(recipe);
     this.generatedId++;
-    this.recipesChanged.emit(this.recipes.slice());
+    this.recipesChanged.next(this.recipes.slice());
   }
 
   public deleteRecipe = (recipe: Recipe): void => {
-    this.recipes = this.recipes.filter(existingRecipe => existingRecipe !== recipe);
-    this.recipesChanged.emit(this.recipes.slice());
+    this.recipes = this.recipes.filter(existingRecipe => existingRecipe.id !== recipe.id);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  public changeRecipe = (recipe: Recipe): void => {
+    this.recipes = this.recipes.map((existingRecipe: Recipe) : Recipe => {
+      return existingRecipe.id === recipe.id ? recipe : existingRecipe;
+    });
+    this.recipesChanged.next(this.recipes.slice());
   }
 }
