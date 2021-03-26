@@ -25,6 +25,16 @@
             autocomplete="off"
           />
         </div>
+        <div class="col-sm-2 form-group">
+          <label for="unit">Unit</label>
+          <select name="unit" class="form-control" [(ngModel)]="ingUnit">
+            <option value="Package">Package</option>
+            <option value="Pound">lb</option>
+            <option value="Gram">g</option>
+            <option value="Ounce">oz</option>
+            <option value="Fluid Ounce">fl oz</option>
+          </select>
+        </div>
       </div>
       <div class="row">
         <div class="col-xs-12">

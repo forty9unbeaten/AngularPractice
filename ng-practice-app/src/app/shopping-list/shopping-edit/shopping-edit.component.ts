@@ -11,6 +11,7 @@ import { ShoppingListService } from 'src/app/services/shopping-list.service';
 export class ShoppingEditComponent implements OnInit, OnDestroy {
   public ingName = '';
   public ingQuantity = 0;
+  public ingUnit = '';
   public disabledDelete = true;
   private ingredientSub: Subscription;
 
@@ -27,21 +28,28 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   validateClear = (): boolean => {
-    return this.ingName !== '' || this.ingQuantity !== 0 ? true : false;
+    return this.ingName || this.ingQuantity > 0 || this.ingUnit ? true : false;
   }
 
   validateAdd = (): boolean => {
-    return this.ingName !== '' && this.ingQuantity !== 0 ? true : false ;
+    return this.ingName !== '' && this.ingQuantity > 0 && this.ingUnit ? true : false ;
   }
 
   clearInputs = (): void => {
     this.ingName = '';
     this.ingQuantity = 0;
+    this.ingUnit = '';
   }
 
   onAddIngredient = (): void => {
     this.shoppingList.addIngredients(
-      [new Ingredient(this.ingName, this.ingQuantity, "lb")]
+      [
+        new Ingredient(
+          this.ingName, 
+          this.ingQuantity, 
+          this.ingQuantity === 1 ? this.ingUnit : `${this.ingUnit}s`
+        )
+      ]
     );
     this.clearInputs();
   }
