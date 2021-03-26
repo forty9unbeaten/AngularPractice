@@ -50,8 +50,13 @@
 <div class="row">
   <div class="col-xs-12">
     <h4>Ingredients</h4>
-    <li *ngFor="let ingredient of recipe.ingredients">
-      {{ ingredient.name }} ({{ ingredient.quantity }})
-    </li>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
+        {{ ingredient.name }}
+        <span class="badge"
+          >{{ ingredient.quantity }} {{ ingredient.measurementUnit }}</span
+        >
+      </li>
+    </ul>
   </div>
 </div>
