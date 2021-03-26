@@ -34,6 +34,9 @@ export class ShoppingListService {
       if (!existingIngredient) {
         this.ingredients.push(newIngredient);
       } else {
+        if (existingIngredient.quantity === 1) {
+          existingIngredient.measurementUnit = `${existingIngredient.measurementUnit}s`;
+        };
         existingIngredient.quantity += newIngredient.quantity;
       }
     });
