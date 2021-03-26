@@ -1,0 +1,25 @@
+input.ng-touched.ng-invalid {
+    box-shadow: 0 0 5px #a94442;
+    border-color: #a94442;
+}
+
+.ingredientItem {
+    display: flex;
+    align-items: center;
+}
+
+.ingredientLabel {
+    width: 90%;
+}
+
+.ingredientDelete {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.unitMenu li {
+    width: 100%;
+    margin-left: 5px;
+}
