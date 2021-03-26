@@ -48,7 +48,7 @@ export class RecipesService {
   }
 
   public changeRecipe = (recipe: Recipe): void => {
-    this.recipes = this.recipes.map((existingRecipe: Recipe) : Recipe => {
+    (this.recipes as Recipe[]) = this.recipes.map((existingRecipe: Recipe) : Recipe => {
       return existingRecipe.id === recipe.id ? recipe : existingRecipe;
     });
     this.recipesChanged.next(this.recipes.slice());
