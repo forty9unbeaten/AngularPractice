@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Ingredient } from 'src/app/models/ingredient.model';
 
 import { Recipe } from 'src/app/models/recipe.model';
 import { RecipesService } from 'src/app/services/recipes.service';
@@ -37,7 +38,11 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 	}
 
 	public onAddToShoppingList = (): void => {
-		this.shoppingList.addIngredients(this.recipe.ingredients);
+		this.shoppingList.addIngredients(
+			this.recipe.ingredients.map(ingredient => {
+				return new Ingredient(ingredient.name, ingredient.quantity, ingredient.measurementUnit);
+			})
+		);
 		this.router.navigate(['/shopping-list']);
 	}
 
