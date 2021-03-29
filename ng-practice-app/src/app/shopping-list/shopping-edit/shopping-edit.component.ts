@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { ShoppingListService } from 'src/app/services/shopping-list.service';
@@ -9,17 +10,26 @@ import { ShoppingListService } from 'src/app/services/shopping-list.service';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
-  public ingName = '';
-  public ingQuantity = 0;
-  public ingUnit = '';
+  @ViewChild('f') form: NgForm;
   public disabledDelete = true;
+  public editMode = false;
+  private ingredientIndex: number;
   private ingredientSub: Subscription;
+  
 
   constructor(private shoppingList: ShoppingListService) {}
 
   ngOnInit(): void {
-    this.ingredientSub = this.shoppingList.newIngredientSelected.subscribe(() => {
-      this.disabledDelete = !this.shoppingList.getSelectedIngredient();
+    this.ingredientSub = this.shoppingList.newIngredientSelected.subscribe((payload: { ingredient: Ingredient, index: number }) => {
+      this.editMode = true;
+      this.ingredientIndex = payload.index;
+      this.form.form.patchValue(
+        {
+          'name': payload.ingredient.name,
+          'quantity': payload.ingredient.quantity,
+          'unit': payload.ingredient.quantity === 1 ? payload.ingredient.measurementUnit : payload.ingredient.measurementUnit.slice(0,-1)
+        }
+      )
     });
   }
 
@@ -27,35 +37,25 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.ingredientSub.unsubscribe();
   }
 
-  validateClear = (): boolean => {
-    return this.ingName || this.ingQuantity > 0 || this.ingUnit ? true : false;
+  public onAddIngredient = (): void => {
+    const { name, quantity, unit } = this.form.value;
+    const ingredient = new Ingredient(name, quantity, unit);
+    if (this.editMode) {
+      this.shoppingList.editIngredient(ingredient, this.ingredientIndex);
+    } else {
+      this.shoppingList.addIngredients([ingredient]);
+    }
+    this.editMode = false;
+    this.form.reset();
   }
 
-  validateAdd = (): boolean => {
-    return this.ingName !== '' && this.ingQuantity > 0 && this.ingUnit ? true : false ;
+  public onDeleteIngredient = (): void => {
+    this.shoppingList.deleteIngredient(this.ingredientIndex);
+    this.editMode = false;
   }
 
-  clearInputs = (): void => {
-    this.ingName = '';
-    this.ingQuantity = 0;
-    this.ingUnit = '';
-  }
-
-  onAddIngredient = (): void => {
-    this.shoppingList.addIngredients(
-      [
-        new Ingredient(
-          this.ingName, 
-          this.ingQuantity, 
-          this.ingQuantity === 1 ? this.ingUnit : `${this.ingUnit}s`
-        )
-      ]
-    );
-    this.clearInputs();
-  }
-
-  onDeleteIngredient = (ingredient: Ingredient = this.shoppingList.getSelectedIngredient()): void => {
-    this.shoppingList.deleteIngredient(ingredient);
-    this.disabledDelete = true;
+  public onClear = (): void => {
+    this.form.reset();
+    this.editMode = false;
   }
 }
