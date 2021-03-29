@@ -8,7 +8,7 @@ import { Ingredient } from '../models/ingredient.model';
 export class ShoppingListService {
   private ingredients: Ingredient[] = [];
   private selectedIngredient: Ingredient;
-  public newIngredientSelected = new Subject();
+  public newIngredientSelected = new Subject<{ ingredient: Ingredient, index: number }>();
   public ingredientsChanged = new Subject<Ingredient[]>();
 
   constructor() { }
@@ -19,7 +19,10 @@ export class ShoppingListService {
 
   public setSelectedIngredient = (ingredient: Ingredient): void => {
     this.selectedIngredient = ingredient;
-    this.newIngredientSelected.next();
+    this.newIngredientSelected.next({
+      ingredient: ingredient,
+      index: this.ingredients.indexOf(this.selectedIngredient)
+    });
   }
 
   public getIngredientList = (): Ingredient[] => {
@@ -43,8 +46,13 @@ export class ShoppingListService {
     this.ingredientsChanged.next(this.ingredients.slice());
   }
 
-  public deleteIngredient = (ingredient: Ingredient): void => {
-    this.ingredients = this.ingredients.filter(ing => ing !== ingredient);
+  public deleteIngredient = (index: number): void => {
+    this.ingredients = this.ingredients.splice(index, 1);
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  public editIngredient = (ingredient: Ingredient, index: number): void => {
+    this.ingredients[index] = ingredient;
     this.ingredientsChanged.next(this.ingredients.slice());
   }
 }
