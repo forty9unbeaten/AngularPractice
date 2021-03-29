@@ -12,7 +12,8 @@
         >
           {{ ing.name }}
           <span class="badge"
-            >{{ ing.quantity }} {{ ing.measurementUnit }}</span
+            >{{ ing.quantity }}
+            {{ ing.measurementUnit | unitPipe: ing.quantity }}</span
           >
         </a>
       </ul>

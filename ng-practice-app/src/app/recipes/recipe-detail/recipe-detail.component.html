@@ -54,7 +54,8 @@
       <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
         {{ ingredient.name }}
         <span class="badge"
-          >{{ ingredient.quantity }} {{ ingredient.measurementUnit }}</span
+          >{{ ingredient.quantity }}
+          {{ ingredient.measurementUnit | unitPipe: ingredient.quantity }}</span
         >
       </li>
     </ul>

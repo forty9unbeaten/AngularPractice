@@ -15,6 +15,7 @@ import { RoutingModule } from './routing/routing.module';
 import { Error404Component } from './error404/error404.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipeHomeComponent } from './recipes/recipe-home/recipe-home.component';
+import { UnitPipe } from './pipes/unit-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { RecipeHomeComponent } from './recipes/recipe-home/recipe-home.component
     Error404Component,
     RecipeEditComponent,
     RecipeHomeComponent,
+    UnitPipe,
   ],
   imports: [
     BrowserModule,
