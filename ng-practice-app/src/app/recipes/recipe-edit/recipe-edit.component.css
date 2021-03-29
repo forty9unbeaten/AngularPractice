@@ -23,3 +23,17 @@ input.ng-touched.ng-invalid {
     width: 100%;
     margin-left: 5px;
 }
+
+.imgPreviewContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.imgPreview {
+    border-radius: 5px;
+    box-shadow: 0 0 5px black;
+}
+

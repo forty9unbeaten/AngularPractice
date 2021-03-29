@@ -14,6 +14,7 @@ export class RecipeEditComponent implements OnInit {
   @ViewChild('recipeForm') recipeForm: NgForm;
   @ViewChild('ingredientForm') ingredientForm: NgForm;
   public editMode = false;
+  public previewMode = false;
   private recipeId: number;
   public recipe: Recipe;
   public ingredientName: string;
@@ -41,7 +42,8 @@ export class RecipeEditComponent implements OnInit {
     }
   }
 
-  public showPreview = (): void => {
+  public togglePreview = (): void => {
+    this.previewMode = !this.previewMode;
   }
 
   public addIngredientToRecipe = () => {
@@ -49,7 +51,7 @@ export class RecipeEditComponent implements OnInit {
       new Ingredient(
         this.ingredientName, 
         this.ingredientQuantity, 
-        this.ingredientQuantity === 1 ? this.ingredientUnit : `${this.ingredientUnit}s` 
+        this.ingredientUnit 
       )
     );
     this.ingredientsChanged = true;

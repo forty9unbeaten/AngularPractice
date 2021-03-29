@@ -15,7 +15,10 @@
         "
         (click)="saveChanges()"
       >
-        Save Recipe
+        <ng-container *ngIf="editMode; else elseTemplate">
+          Update
+        </ng-container>
+        <ng-template #elseTemplate> Create </ng-template>
       </button>
       <button
         class="btn btn-primary"
@@ -60,16 +63,28 @@
             autocomplete="off"
             class="form-control"
             [(ngModel)]="recipe.imgPath"
+            [disabled]="previewMode"
           />
           <span class="input-group-btn">
             <button
               class="btn btn-default"
-              (click)="showPreview()"
+              (click)="togglePreview()"
               [disabled]="!recipe.imgPath"
             >
-              Preview
+              <ng-container *ngIf="previewMode; else previewOff">
+                Close
+              </ng-container>
+              <ng-template #previewOff>Preview</ng-template>
             </button>
           </span>
+        </div>
+        <div *ngIf="previewMode" class="imgPreviewContainer">
+          <img
+            [src]="recipe.imgPath"
+            [alt]="recipe.name"
+            class="img-responsive imgPreview"
+            style="max-height: 175px"
+          />
         </div>
       </form>
       <form #ingredientForm="ngForm">
@@ -94,7 +109,7 @@
           />
           <span class="input-group-addon">Unit</span>
           <select name="unit" class="form-control" [(ngModel)]="ingredientUnit">
-            <option value="Package">pack</option>
+            <option value="Package">package</option>
             <option value="Pound">lb</option>
             <option value="Gram">g</option>
             <option value="Ounce">oz</option>
