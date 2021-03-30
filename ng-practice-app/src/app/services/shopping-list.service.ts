@@ -35,8 +35,12 @@ export class ShoppingListService {
       .pipe(
         map(
           (ingredients: Ingredient[]) => {
-            this.ingredients = ingredients
-            return ingredients
+            if (ingredients) {
+              this.ingredients = ingredients
+            } else {
+              this.ingredients = [];
+            }
+            return this.ingredients.slice();
           }
         )
       )
@@ -61,7 +65,7 @@ export class ShoppingListService {
   }
 
   public deleteIngredient = (index: number): void => {
-    this.ingredients = this.ingredients.splice(index, 1);
+    this.ingredients.splice(index, 1);
     this.sendIngredientsToServer();
   }
 
@@ -74,7 +78,11 @@ export class ShoppingListService {
     this.http.put(`${this.ingredientsURL}.json`, this.ingredients)
       .subscribe(
         (res: Ingredient[]) => {
-          this.ingredients = res;
+          if (res) {
+            this.ingredients = res;
+          } else {
+            this.ingredients = [];
+          }
           this.ingredientsChanged.next(this.ingredients.slice())
         },
         error => {
