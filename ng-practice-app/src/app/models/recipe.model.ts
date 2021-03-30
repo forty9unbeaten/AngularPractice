@@ -7,10 +7,7 @@ export class Recipe {
         public description: string,
         public imgPath: string,
         public ingredients: Ingredient[],
-        public id?: number
+        public id = ''
     ) {
-        if (!this.id) {
-            this.id = 1;
-        }
     }
 }
