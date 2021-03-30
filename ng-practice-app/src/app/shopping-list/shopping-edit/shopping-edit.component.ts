@@ -21,13 +21,19 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ingredientSub = this.shoppingList.newIngredientSelected.subscribe((payload: { ingredient: Ingredient, index: number }) => {
+      if (!payload.ingredient) {
+        this.editMode = false;
+        this.ingredientIndex = null;
+        this.form.reset();
+        return
+      }
       this.editMode = true;
       this.ingredientIndex = payload.index;
       this.form.form.patchValue(
         {
           'name': payload.ingredient.name,
           'quantity': payload.ingredient.quantity,
-          'unit': payload.ingredient.quantity === 1 ? payload.ingredient.measurementUnit : payload.ingredient.measurementUnit.slice(0,-1)
+          'unit': payload.ingredient.measurementUnit
         }
       )
     });
