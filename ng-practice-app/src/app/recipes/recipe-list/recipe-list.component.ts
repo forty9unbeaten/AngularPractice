@@ -10,12 +10,24 @@ import { Recipe } from '../../models/recipe.model';
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   public recipes: Recipe[];
+  public dataLoading = false;
   private recipeSub: Subscription;
 
   constructor(private recipeService: RecipesService) {}
 
   ngOnInit(): void {
-    this.recipes = this.recipeService.getRecipeList();
+    this.dataLoading = true;
+    this.recipeService.getRecipeList()
+      .subscribe(
+        (recipes: Recipe[]) => {
+          this.recipes = recipes;
+          this.dataLoading = false;
+        },
+        error => {
+          console.log(error);
+          this.dataLoading = false;
+        }
+      )
     this.recipeSub = this.recipeService.recipesChanged.subscribe((recipes: Recipe[]) => {
       this.recipes = recipes;
     });
