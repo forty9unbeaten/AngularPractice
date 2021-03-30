@@ -16,7 +16,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   constructor(private shoppingList: ShoppingListService, private renderer: Renderer2) {}
   
   ngOnInit(): void {
-    this.ingredients = this.shoppingList.getIngredientList();
+    this.shoppingList.getIngredientList()
+      .subscribe(
+        (ingredients: Ingredient[]) => {
+          this.ingredients = ingredients;
+        }
+      )
     this.ingredientSub = this.shoppingList.ingredientsChanged.subscribe((ingredients: Ingredient[]) => {
       this.ingredients = ingredients;
     });
@@ -27,15 +32,25 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   selectIngredient = (ingredient: Ingredient, evt: Event): void => {
-    this.shoppingList.setSelectedIngredient(ingredient);
-    if (evt.target === this.lastSelected && this.shoppingList.getIngredientList().length > 1) {
-      this.renderer.removeClass(evt.target, 'selected')
-    }
-    if (this.lastSelected) {
-      this.renderer.removeClass(this.lastSelected, 'selected');
-    }
-    this.renderer.addClass(evt.target, 'selected');
-    this.lastSelected = evt.target;
-  }
+    if (!this.lastSelected) {
 
+      this.renderer.addClass(evt.target, 'selected')
+      this.lastSelected = evt.target;
+      this.shoppingList.setSelectedIngredient(ingredient)
+
+    } else {
+
+      const sameElement = evt.target === this.lastSelected;
+      if (sameElement) {
+        this.renderer.removeClass(evt.target, 'selected');
+        this.lastSelected = null;
+        this.shoppingList.setSelectedIngredient(null);
+      } else {
+        this.renderer.removeClass(this.lastSelected, 'selected')
+        this.renderer.addClass(evt.target, 'selected');
+        this.lastSelected = evt.target;
+        this.shoppingList.setSelectedIngredient(ingredient)
+      }
+    }
+  }
 }
