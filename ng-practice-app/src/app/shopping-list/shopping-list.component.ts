@@ -10,16 +10,23 @@ import { ShoppingListService } from '../services/shopping-list.service';
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
   public ingredients: Ingredient[];
+  public dataLoading = false;
   private lastSelected: EventTarget;
   private ingredientSub: Subscription;
 
   constructor(private shoppingList: ShoppingListService, private renderer: Renderer2) {}
   
   ngOnInit(): void {
+    this.dataLoading = true;
     this.shoppingList.getIngredientList()
       .subscribe(
         (ingredients: Ingredient[]) => {
           this.ingredients = ingredients;
+          this.dataLoading = false;
+        },
+        error => {
+          console.log(error);
+          this.dataLoading = false;
         }
       )
     this.ingredientSub = this.shoppingList.ingredientsChanged.subscribe((ingredients: Ingredient[]) => {

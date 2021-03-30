@@ -3,20 +3,25 @@
     <app-shopping-edit></app-shopping-edit>
     <hr />
     <div class="col-xs-6">
-      <ul class="list-group">
-        <a
-          class="list-group-item"
-          style="cursor: pointer"
-          *ngFor="let ing of ingredients"
-          (click)="selectIngredient(ing, $event)"
-        >
-          {{ ing.name }}
-          <span class="badge"
-            >{{ ing.quantity }}
-            {{ ing.measurementUnit | unitPipe: ing.quantity }}</span
+      <ng-container *ngIf="dataLoading; else shoppingList">
+        ...Loading
+      </ng-container>
+      <ng-template #shoppingList>
+        <ul class="list-group">
+          <a
+            class="list-group-item"
+            style="cursor: pointer"
+            *ngFor="let ing of ingredients"
+            (click)="selectIngredient(ing, $event)"
           >
-        </a>
-      </ul>
+            {{ ing.name }}
+            <span class="badge"
+              >{{ ing.quantity }}
+              {{ ing.measurementUnit | unitPipe: ing.quantity }}</span
+            >
+          </a>
+        </ul>
+      </ng-template>
     </div>
   </div>
 </div>
