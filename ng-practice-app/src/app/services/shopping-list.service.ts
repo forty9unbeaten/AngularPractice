@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Ingredient } from '../models/ingredient.model';
 
 @Injectable({
@@ -8,28 +10,40 @@ import { Ingredient } from '../models/ingredient.model';
 export class ShoppingListService {
   private ingredients: Ingredient[] = [];
   private selectedIngredient: Ingredient;
+  private ingredientsURL: string = 'https://angular-practice-8c0db-default-rtdb.firebaseio.com/ingredients'
   public newIngredientSelected = new Subject<{ ingredient: Ingredient, index: number }>();
   public ingredientsChanged = new Subject<Ingredient[]>();
 
-  constructor() { }
-
-  public getSelectedIngredient = (): Ingredient => {
-    return this.selectedIngredient;
-  }
+  constructor(private http: HttpClient) { }
 
   public setSelectedIngredient = (ingredient: Ingredient): void => {
-    this.selectedIngredient = ingredient;
-    this.newIngredientSelected.next({
-      ingredient: ingredient,
-      index: this.ingredients.indexOf(this.selectedIngredient)
-    });
+    if (!ingredient) {
+      this.newIngredientSelected.next({
+        ingredient: null,
+        index: 0
+      })
+    } else {
+      this.newIngredientSelected.next({
+        ingredient: ingredient,
+        index: this.ingredients.indexOf(ingredient)
+      });
+    }
   }
 
-  public getIngredientList = (): Ingredient[] => {
-    return this.ingredients.slice();
+  public getIngredientList = (): Observable<any> => {
+    return this.http.get(`${this.ingredientsURL}.json`)
+      .pipe(
+        map(
+          (ingredients: Ingredient[]) => {
+            this.ingredients = ingredients
+            return ingredients
+          }
+        )
+      )
   }
 
   public addIngredients = (ingredients: Ingredient[]): void => {
+    // find duplicaes and update quantity
     ingredients.forEach(newIngredient => {
       const existingIngredient = this.ingredients.find(existing =>
         existing.name.toLowerCase().trim() === newIngredient.name.toLowerCase().trim()
@@ -43,16 +57,29 @@ export class ShoppingListService {
         existingIngredient.quantity += newIngredient.quantity;
       }
     });
-    this.ingredientsChanged.next(this.ingredients.slice());
+    this.sendIngredientsToServer();
   }
 
   public deleteIngredient = (index: number): void => {
     this.ingredients = this.ingredients.splice(index, 1);
-    this.ingredientsChanged.next(this.ingredients.slice());
+    this.sendIngredientsToServer();
   }
 
   public editIngredient = (ingredient: Ingredient, index: number): void => {
     this.ingredients[index] = ingredient;
-    this.ingredientsChanged.next(this.ingredients.slice());
+    this.sendIngredientsToServer();
+  }
+
+  private sendIngredientsToServer = (): void => {
+    this.http.put(`${this.ingredientsURL}.json`, this.ingredients)
+      .subscribe(
+        (res: Ingredient[]) => {
+          this.ingredients = res;
+          this.ingredientsChanged.next(this.ingredients.slice())
+        },
+        error => {
+          console.log(error);
+        }
+      )
   }
 }
