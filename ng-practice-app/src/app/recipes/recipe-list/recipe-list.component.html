@@ -6,9 +6,14 @@
 <hr />
 <div class="row">
   <div class="col-xs-12">
-    <app-recipe-item
-      *ngFor="let recipe of recipes"
-      [recipe]="recipe"
-    ></app-recipe-item>
+    <ng-container *ngIf="dataLoading; else recipeList">
+      <span>Loading...</span>
+    </ng-container>
+    <ng-template #recipeList>
+      <app-recipe-item
+        *ngFor="let recipe of recipes"
+        [recipe]="recipe"
+      ></app-recipe-item>
+    </ng-template>
   </div>
 </div>
