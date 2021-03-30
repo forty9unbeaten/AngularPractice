@@ -13,14 +13,4 @@ export class RecipeItemComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  public formatRecipeDescription = (): string => {
-    if (this.recipe.description.length <= 39) {
-      return this.recipe.description;
-    } else {
-      const formattedDescription = this.recipe.description.slice(0,35);
-      return `${formattedDescription}...`
-    }
-  }
-
 }
