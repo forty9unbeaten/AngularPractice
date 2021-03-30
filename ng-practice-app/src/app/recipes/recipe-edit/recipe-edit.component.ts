@@ -13,9 +13,10 @@ import { RecipesService } from 'src/app/services/recipes.service';
 export class RecipeEditComponent implements OnInit {
   @ViewChild('recipeForm') recipeForm: NgForm;
   @ViewChild('ingredientForm') ingredientForm: NgForm;
+  private recipeId: string;
+  public dataLoading = false;
   public editMode = false;
   public previewMode = false;
-  private recipeId: number;
   public recipe: Recipe;
   public ingredientName: string;
   public ingredientQuantity: number;
@@ -25,20 +26,28 @@ export class RecipeEditComponent implements OnInit {
   constructor(
     private recipeService: RecipesService,
     private router: Router,
-    private currentRoute: ActivatedRoute,
-    private renderer: Renderer2,
-    private changeDetector: ChangeDetectorRef
+    private currentRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.recipeId = Number(this.currentRoute.snapshot.params.id);
-
+    this.dataLoading = true;
+    this.recipeId = this.currentRoute.snapshot.params.id;
     if (this.recipeId) {
-     this.editMode = true;
-     this.recipe = {...this.recipeService.getSelectedRecipe(this.recipeId)};
+      this.editMode = true;
+      this.recipeService.getSelectedRecipe(this.recipeId)
+      .subscribe(
+        (recipe: Recipe) => {
+          this.recipe = recipe;
+          this.dataLoading = false;
+        },
+        error => {
+          console.log(error);
+        }
+      )
     } else {
       this.editMode = false;
       this.recipe = new Recipe('', '', '', []);
+      this.dataLoading = false;
     }
   }
 
