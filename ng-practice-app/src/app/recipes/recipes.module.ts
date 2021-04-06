@@ -1,8 +1,4 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { DropdownToggleDirective } from '../shared/directives/dropdown-toggle.directive';
 import { SharedResourceModule } from '../shared/shared-resource.module';
 
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
@@ -22,13 +18,7 @@ import { RecipesComponent } from './recipes.component';
     RecipeEditComponent,
     RecipeHomeComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    SharedResourceModule,
-    RecipesRoutingModule,
-  ],
+  imports: [SharedResourceModule, RecipesRoutingModule],
   exports: [],
 })
 export class RecipesModule {}
