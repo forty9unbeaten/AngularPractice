@@ -1,0 +1,140 @@
+<div class="col-xs-3"></div>
+<div class="col-xs-6">
+  <h3>
+    <ng-container *ngIf="loginMode; else signupHeader">
+      Log In to Your Account
+    </ng-container>
+    <ng-template #signupHeader> Sign Up for a New Account </ng-template>
+  </h3>
+  <hr />
+  <form #authForm="ngForm" id="authForm">
+    <div class="form-group">
+      <ng-container *ngIf="loginMode; else signupForm">
+        <h5>
+          <label class="control-label" for="email">Email Address</label>
+        </h5>
+        <input
+          class="form-control"
+          type="text"
+          name="email"
+          autocomplete="off"
+          ngModel
+          required
+          email
+        />
+        <h5>
+          <label class="control-label" for="email">Password</label>
+        </h5>
+        <input
+          class="form-control"
+          type="password"
+          name="password"
+          autocomplete="off"
+          minlength="6"
+          ngModel
+          required
+        />
+      </ng-container>
+      <ng-template #signupForm>
+        <h5><label class="control-label" for="name">Name</label></h5>
+        <input
+          class="form-control"
+          type="text"
+          name="name"
+          autocomplete="off"
+          ngModel
+          required
+        />
+        <h5><label for="email" class="control-label">Email Address</label></h5>
+        <input
+          class="form-control"
+          type="text"
+          name="email"
+          autocomplete="off"
+          ngModel
+          required
+          email
+          #emailField
+        />
+        <h5><label for="password" class="control-label">Password</label></h5>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          minlength="6"
+          required
+          [(ngModel)]="password"
+        />
+        <span class="passText">*must be at least 6 characters in length</span>
+        <div class="confirmRow">
+          <h5>
+            <label for="passwordConfirm" class="control-label"
+              >Confirm Password</label
+            >
+          </h5>
+          <div
+            class="glyphicon"
+            [ngClass]="
+              password.length >= 6 && password === passwordConfirm
+                ? 'glyphicon-ok'
+                : 'glyphicon-remove'
+            "
+            [ngStyle]="{
+              color:
+                password.length >= 6 && password === passwordConfirm
+                  ? 'green'
+                  : 'red'
+            }"
+          ></div>
+        </div>
+        <input
+          type="password"
+          class="form-control"
+          name="passwordConfirm"
+          [(ngModel)]="passwordConfirm"
+          required
+        />
+      </ng-template>
+    </div>
+  </form>
+  <div class="buttonContainer">
+    <ng-container *ngIf="loading; else showButton">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <ng-template #showButton>
+      <button
+        class="btn btn-success"
+        [disabled]="
+          loginMode
+            ? !authForm.valid
+            : !(authForm.valid && password === passwordConfirm)
+        "
+        (click)="onFormSubmit()"
+      >
+        <ng-container *ngIf="loginMode; else signUpButton">
+          Log In
+        </ng-container>
+        <ng-template #signUpButton> Sign Up </ng-template>
+      </button>
+      <app-alert
+        *ngIf="errorMessage"
+        [message]="errorMessage"
+        (close)="onAlertClose()"
+      ></app-alert>
+    </ng-template>
+    <br />
+    <span>
+      <ng-container *ngIf="loginMode; else existingAccount">
+        Don't have an account yet?
+      </ng-container>
+      <ng-template #existingAccount> Already have an account? </ng-template>
+    </span>
+    <button class="btn btn-primary" (click)="switchModes()">
+      <ng-container *ngIf="loginMode; else accountExist">
+        Sign Up
+      </ng-container>
+      <ng-template #accountExist> Log In </ng-template>
+    </button>
+  </div>
+</div>
+<div class="col-xs-3"></div>
