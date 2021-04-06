@@ -7,7 +7,7 @@
 <div class="row">
   <div class="col-xs-12">
     <ng-container *ngIf="dataLoading; else recipeList">
-      <span>Loading...</span>
+      <app-loading-spinner></app-loading-spinner>
     </ng-container>
     <ng-template #recipeList>
       <app-recipe-item

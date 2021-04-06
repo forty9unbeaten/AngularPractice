@@ -4,7 +4,7 @@
     <hr />
     <div class="col-xs-6">
       <ng-container *ngIf="dataLoading; else shoppingList">
-        ...Loading
+        <app-loading-spinner></app-loading-spinner>
       </ng-container>
       <ng-template #shoppingList>
         <ul class="list-group">
