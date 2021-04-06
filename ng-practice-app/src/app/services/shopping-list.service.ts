@@ -9,7 +9,6 @@ import { Ingredient } from '../models/ingredient.model';
 })
 export class ShoppingListService {
   private ingredients: Ingredient[] = [];
-  private selectedIngredient: Ingredient;
   private ingredientsURL: string = 'https://angular-practice-8c0db-default-rtdb.firebaseio.com/ingredients'
   public newIngredientSelected = new Subject<{ ingredient: Ingredient, index: number }>();
   public ingredientsChanged = new Subject<Ingredient[]>();
@@ -30,7 +29,7 @@ export class ShoppingListService {
     }
   }
 
-  public getIngredientList = (): Observable<any> => {
+  public getIngredientList = (): Observable<Ingredient[]> => {
     return this.http.get(`${this.ingredientsURL}.json`)
       .pipe(
         map(
