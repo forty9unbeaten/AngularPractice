@@ -1,0 +1,33 @@
+#authForm h5 {
+    margin: 10px 0 0 0;
+}
+
+.passText {
+    font-size: 12px;
+}
+
+.confirmRow {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.confirmRow .glyphicon {
+    margin: 3px 0 0 5px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonContainer button.btn {
+    width: 100%;
+}
+
+input.ng-pristine.badEmail {
+    box-shadow: 0 0 3px red;
+    border-color: red;
+}
