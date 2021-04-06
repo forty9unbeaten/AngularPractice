@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, BehaviorSubject, throwError, Subject } from 'rxjs';
-import { catchError, take, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
-import { firebaseAPIKey } from '../../environments/environment';
+import { environment as env } from '../../environments/environment';
 import { AuthResponse } from '../models/auth-response.model';
 import { User } from '../models/user.model';
 
@@ -12,8 +12,8 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private signupURL: string = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseAPIKey}`;
-  private loginURL: string = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseAPIKey}`;
+  private signupURL: string = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${env.firebaseAPIKey}`;
+  private loginURL: string = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${env.firebaseAPIKey}`;
   private tokenExpTimer: any;
 
   public user = new BehaviorSubject<User>(null);
