@@ -24,7 +24,6 @@ export class RecipeListComponent implements OnInit, OnDestroy {
           this.dataLoading = false;
         },
         error => {
-          console.log(error);
           this.dataLoading = false;
         }
       )
