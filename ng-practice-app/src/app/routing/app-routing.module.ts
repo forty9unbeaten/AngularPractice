@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { Error404Component } from '../shared/components/error404/error404.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'recipes', pathMatch: 'full' },
   {
     path: 'recipes',
     loadChildren: () =>
@@ -22,12 +21,15 @@ const appRoutes: Routes = [
       import('../auth/auth.module').then((m) => m.AuthenticationModule),
   },
   { path: 'not-found', component: Error404Component },
+  { path: '', redirectTo: 'recipes', pathMatch: 'full' },
   { path: '**', redirectTo: 'not-found' },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [RouterModule.forRoot(appRoutes)],
+  imports: [
+    RouterModule.forRoot(appRoutes, { preloadingStrategy: PreloadAllModules }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
