@@ -9,6 +9,6 @@
     background-color: #eeeded;
 }
 
-.dataManage a {
-    cursor: pointer;
+nav.navbar div, div.navbar-default, div.navbar-right {
+    height: 100%;
 }
