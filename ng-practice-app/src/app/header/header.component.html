@@ -18,6 +18,20 @@
             >Shopping List</a
           >
         </li>
+        <li>
+          <a
+            class="navLink"
+            style="cursor: pointer"
+            (click)="onAuthLinkClick()"
+            [routerLink]="['/auth']"
+            routerLinkActive="selected"
+          >
+            <ng-container *ngIf="isAuthenticated; else login">
+              Logout
+            </ng-container>
+            <ng-template #login> Login </ng-template>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
