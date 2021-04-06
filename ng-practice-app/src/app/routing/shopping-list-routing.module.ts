@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ShoppingListComponent } from '../shopping-list/shopping-list.component';
 
-const slRoutes = [{ path: 'shopping-list', component: ShoppingListComponent }];
+const slRoutes = [{ path: '', component: ShoppingListComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(slRoutes)],
