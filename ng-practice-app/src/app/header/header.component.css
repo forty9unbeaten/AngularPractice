@@ -1,0 +1,14 @@
+.navbar-brand, .navbar-brand:hover, .navbar-brand:focus {
+    cursor: default;
+    color: black;
+}
+
+.nav.navbar-nav .navLink.selected {
+    font-weight: bold;
+    color: black;
+    background-color: #eeeded;
+}
+
+nav.navbar div, div.navbar-default, div.navbar-right {
+    height: 100%;
+}

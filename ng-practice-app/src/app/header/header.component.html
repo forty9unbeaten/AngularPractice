@@ -1,0 +1,38 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="/">Recipe Book</a>
+    </div>
+    <div class="navbar-default">
+      <ul class="nav navbar-nav">
+        <li>
+          <a class="navLink" routerLinkActive="selected" routerLink="/recipes"
+            >Recipes</a
+          >
+        </li>
+        <li>
+          <a
+            class="navLink"
+            routerLink="/shopping-list"
+            routerLinkActive="selected"
+            >Shopping List</a
+          >
+        </li>
+        <li>
+          <a
+            class="navLink"
+            style="cursor: pointer"
+            (click)="onAuthLinkClick()"
+            [routerLink]="['/auth']"
+            routerLinkActive="selected"
+          >
+            <ng-container *ngIf="isAuthenticated; else login">
+              Logout
+            </ng-container>
+            <ng-template #login> Login </ng-template>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

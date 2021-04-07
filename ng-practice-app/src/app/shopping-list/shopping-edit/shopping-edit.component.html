@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-xs-12">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-sm-5 form-group">
+          <label for="name">Name</label>
+          <input
+            ngModel
+            type="text"
+            name="name"
+            id="name"
+            class="form-control"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <div class="col-sm-2 form-group">
+          <label for="quantity">Quantity</label>
+          <input
+            ngModel
+            type="number"
+            min="1"
+            id="quantity"
+            name="quantity"
+            class="form-control"
+            autocomplete="off"
+            required
+            pattern="^[1-9]+[0-9]*$"
+          />
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="unit">Unit</label>
+          <select name="unit" class="form-control" ngModel required>
+            <option value="Package">Package</option>
+            <option value="Pound">lb</option>
+            <option value="Gram">g</option>
+            <option value="Ounce">oz</option>
+            <option value="Fluid Ounce">fl oz</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="btn-group">
+            <button
+              class="btn btn-success"
+              type="submit"
+              [disabled]="!f.valid"
+              (click)="onAddIngredient()"
+            >
+              <ng-container *ngIf="editMode; else newTemplate">
+                Update
+              </ng-container>
+              <ng-template #newTemplate> Add </ng-template>
+            </button>
+            <button
+              class="btn btn-danger"
+              type="button"
+              [disabled]="!editMode"
+              (click)="onDeleteIngredient()"
+            >
+              Delete
+            </button>
+            <button
+              class="btn btn-primary"
+              type="button"
+              [disabled]="!(f.value.name || f.value.quantity || f.value.unit)"
+              (click)="onClear()"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

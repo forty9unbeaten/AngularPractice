@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-xs-12">
+    <app-shopping-edit></app-shopping-edit>
+    <hr />
+    <div class="col-xs-6">
+      <ng-container *ngIf="dataLoading; else shoppingList">
+        <app-loading-spinner></app-loading-spinner>
+      </ng-container>
+      <ng-template #shoppingList>
+        <ul class="list-group">
+          <a
+            class="list-group-item"
+            style="cursor: pointer"
+            *ngFor="let ing of ingredients"
+            (click)="selectIngredient(ing, $event)"
+          >
+            {{ ing.name }}
+            <span class="badge"
+              >{{ ing.quantity }}
+              {{ ing.measurementUnit | unitPipe: ing.quantity }}</span
+            >
+          </a>
+        </ul>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,171 @@
+<div class="container-fluid">
+  <div class="col-xs-12">
+    <ng-container *ngIf="dataLoading; else elseTemplate">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <ng-container *ngIf="editMode; else newTemplate">
+        <h4>Edit Recipe</h4>
+      </ng-container>
+      <ng-template #newTemplate>
+        <h4>New Recipe</h4>
+      </ng-template>
+      <hr />
+      <div class="row-no-gutters">
+        <button
+          class="btn btn-success"
+          [disabled]="
+            !(recipe.name.trim() && (recipeForm.dirty || ingredientsChanged))
+          "
+          (click)="saveChanges()"
+        >
+          <ng-container *ngIf="editMode; else elseTemplate">
+            Update
+          </ng-container>
+          <ng-template #elseTemplate> Create </ng-template>
+        </button>
+        <button
+          class="btn btn-primary"
+          [disabled]="!validClear()"
+          (click)="clearForms()"
+        >
+          Clear
+        </button>
+        <button class="btn btn-danger" (click)="cancelChanges()">Cancel</button>
+        <form #recipeForm="ngForm" class="form-horizontal">
+          <label for="name">Recipe Name</label>
+          <input
+            type="text"
+            name="name"
+            autocomplete="off"
+            class="form-control"
+            [(ngModel)]="recipe.name"
+            required
+            #recipeName="ngModel"
+          />
+          <span
+            class="text-danger"
+            *ngIf="!recipe.name.trim() && recipeName.touched"
+          >
+            *a valid recipe name is required
+          </span>
+          <br />
+          <label for="desc">Description</label>
+          <textarea
+            name="desc"
+            rows="3"
+            autocomplete="off"
+            class="form-control"
+            [(ngModel)]="recipe.description"
+            #recipeDescription="ngModel"
+          ></textarea>
+          <label for="imgPath">Image (URL path)</label>
+          <div class="input-group">
+            <input
+              type="text"
+              name="imgPath"
+              autocomplete="off"
+              class="form-control"
+              [(ngModel)]="recipe.imgPath"
+              [disabled]="previewMode"
+            />
+            <span class="input-group-btn">
+              <button
+                class="btn btn-default"
+                (click)="togglePreview()"
+                [disabled]="!recipe.imgPath"
+              >
+                <ng-container *ngIf="previewMode; else previewOff">
+                  Close
+                </ng-container>
+                <ng-template #previewOff>Preview</ng-template>
+              </button>
+            </span>
+          </div>
+          <div *ngIf="previewMode" class="imgPreviewContainer">
+            <img
+              [src]="recipe.imgPath"
+              [alt]="recipe.name"
+              class="img-responsive imgPreview"
+              style="max-height: 175px"
+            />
+          </div>
+        </form>
+        <form #ingredientForm="ngForm">
+          <h5 style="font-weight: bold">Ingredients</h5>
+          <div class="input-group">
+            <span class="input-group-addon">Name</span>
+            <input
+              type="text"
+              name="ingName"
+              autocomplete="off"
+              class="form-control"
+              [(ngModel)]="ingredientName"
+            />
+            <span class="input-group-addon">Quantity</span>
+            <input
+              type="number"
+              min="0"
+              autocomplete="off"
+              name="ingQuantity"
+              class="form-control"
+              [(ngModel)]="ingredientQuantity"
+            />
+            <span class="input-group-addon">Unit</span>
+            <select
+              name="unit"
+              class="form-control"
+              [(ngModel)]="ingredientUnit"
+            >
+              <option value="Package">package</option>
+              <option value="Pound">lb</option>
+              <option value="Gram">g</option>
+              <option value="Ounce">oz</option>
+              <option value="Fluid Ounce">fl oz</option>
+            </select>
+            <span class="input-group-btn">
+              <button
+                class="btn btn-success"
+                [disabled]="
+                  !(ingredientName && ingredientQuantity > 0 && ingredientUnit)
+                "
+                (click)="addIngredientToRecipe()"
+              >
+                Add
+              </button>
+            </span>
+          </div>
+        </form>
+        <hr />
+        <ul class="list-group">
+          <li
+            class="list-group-item"
+            *ngFor="let ingredient of recipe.ingredients"
+          >
+            <div class="ingredientItem">
+              <div class="ingredientLabel">
+                <span>
+                  {{ ingredient.name }}
+                </span>
+                <span class="badge"
+                  >{{ ingredient.quantity }}
+                  {{
+                    ingredient.measurementUnit | unitPipe: ingredient.quantity
+                  }}</span
+                >
+              </div>
+              <div class="ingredientDelete">
+                <button
+                  class="btn-xs btn-danger"
+                  (click)="deleteIngredient(ingredient)"
+                >
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+  </div>
+</div>

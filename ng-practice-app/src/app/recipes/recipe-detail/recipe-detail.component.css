@@ -1,0 +1,9 @@
+.noClick:hover {
+    cursor: default;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.dropdown-menu li {
+    cursor: pointer;
+}
