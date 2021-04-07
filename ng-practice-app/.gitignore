@@ -47,3 +47,6 @@ Thumbs.db
 
 # Environments
 /src/environments/
+
+# Deployment Assets
+*firebase*
