@@ -45,8 +45,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Environments
-/src/environments/
-
 # Deployment Assets
 *firebase*
