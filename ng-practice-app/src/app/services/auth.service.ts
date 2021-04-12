@@ -31,6 +31,13 @@ export class AuthService {
     };
     return this.http.post<AuthResponse>(this.signupURL, requestBody).pipe(
       catchError((err) => {
+        if (env.firebaseAPIKey === null) {
+          // no api key attached to request
+          return throwError({
+            type: 'general',
+            message: `You seem to be working in a dev environment. Make sure you have the API Key!`,
+          });
+        }
         if (!err.error || !err.error.error.message) {
           return throwError({
             type: 'general',
@@ -62,6 +69,13 @@ export class AuthService {
     };
     return this.http.post<AuthResponse>(this.loginURL, requestBody).pipe(
       catchError((err) => {
+        if (env.firebaseAPIKey === null) {
+          // no api key attached to http request
+          return throwError({
+            type: 'general',
+            message: `You seem to be working in a dev environment. Make sure you have the API Key!`,
+          });
+        }
         if (!err.error || !err.error.error.message) {
           return throwError({
             type: 'general',
