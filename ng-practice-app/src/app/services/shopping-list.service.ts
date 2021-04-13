@@ -47,7 +47,7 @@ export class ShoppingListService {
   };
 
   public addIngredients = (ingredients: Ingredient[]): void => {
-    // find duplicaes and update quantity
+    // find duplicates and update quantity
     ingredients.forEach((newIngredient) => {
       const existingIngredient = this.ingredients.find(
         (existing) =>
@@ -57,9 +57,6 @@ export class ShoppingListService {
       if (!existingIngredient) {
         this.ingredients.push(newIngredient);
       } else {
-        if (existingIngredient.quantity === 1) {
-          existingIngredient.measurementUnit = `${existingIngredient.measurementUnit}s`;
-        }
         existingIngredient.quantity += newIngredient.quantity;
       }
     });
