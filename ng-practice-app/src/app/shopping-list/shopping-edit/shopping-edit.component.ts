@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { ShoppingListService } from 'src/app/services/shopping-list.service';
+import * as slActions from '../state/shopping-list.actions';
+import * as fromShoppingList from '../state/shopping-list.reducer';
+import { AppState } from '../../app.state';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -22,29 +26,31 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   private authSub: Subscription;
 
   constructor(
-    private shoppingList: ShoppingListService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
-    this.ingredientSub = this.shoppingList.newIngredientSelected.subscribe(
-      (payload: { ingredient: Ingredient; index: number }) => {
-        if (!payload || !payload.ingredient) {
+    this.ingredientSub = this.store
+      .select('shoppingList')
+      .subscribe((state: fromShoppingList.ShoppingListState) => {
+        if (state.selectedIngredient) {
+          this.editMode = true;
+          this.ingredientIndex = state.selectedIndex;
+          this.form.form.patchValue({
+            name: state.selectedIngredient.name,
+            quantity: state.selectedIngredient.quantity,
+            unit: state.selectedIngredient.measurementUnit,
+          });
+        } else {
+          if (this.ingredientIndex) {
+            this.form.reset();
+          }
           this.editMode = false;
           this.ingredientIndex = null;
-          this.form.reset();
-          return;
         }
-        this.editMode = true;
-        this.ingredientIndex = payload.index;
-        this.form.form.patchValue({
-          name: payload.ingredient.name,
-          quantity: payload.ingredient.quantity,
-          unit: payload.ingredient.measurementUnit,
-        });
-      }
-    );
+      });
 
     this.authSub = this.authService.user.subscribe((user: User) => {
       if (user) {
@@ -68,9 +74,14 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const { name, quantity, unit } = this.form.value;
     const ingredient = new Ingredient(name, quantity, unit);
     if (this.editMode) {
-      this.shoppingList.editIngredient(ingredient, this.ingredientIndex);
+      this.store.dispatch(
+        new slActions.EditIngredient({
+          ingredient: ingredient,
+          index: this.ingredientIndex,
+        })
+      );
     } else {
-      this.shoppingList.addIngredients([ingredient]);
+      this.store.dispatch(new slActions.AddIngredient(ingredient));
     }
     this.editMode = false;
     this.form.reset();
@@ -81,7 +92,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       this.router.navigate(['/auth']);
       return;
     }
-    this.shoppingList.deleteIngredient(this.ingredientIndex);
+    this.store.dispatch(new slActions.DeleteIngredient(this.ingredientIndex));
     this.editMode = false;
     this.form.reset();
   };
@@ -89,6 +100,11 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   public onClear = (): void => {
     this.form.reset();
     this.editMode = false;
-    this.shoppingList.newIngredientSelected.next(null);
+    this.store.dispatch(
+      new slActions.SelectIngredient({
+        ingredient: null,
+        index: -1,
+      })
+    );
   };
 }
