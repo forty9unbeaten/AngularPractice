@@ -8,7 +8,7 @@ export interface ShoppingListState {
 }
 
 const initialState: ShoppingListState = {
-  ingredients: [new Ingredient('Apples', 2, 'Pound')],
+  ingredients: [],
   selectedIngredient: null,
   selectedIndex: -1,
 };
