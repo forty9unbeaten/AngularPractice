@@ -4,12 +4,10 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
-import { Ingredient } from 'src/app/models/ingredient.model';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import * as slActions from '../state/shopping-list.actions';
-import * as fromShoppingList from '../state/shopping-list.reducer';
-import { AppState } from '../../app.state';
+import { Ingredient } from '@models/ingredient.model';
+import * as fromShoppingList from '@shoppingList/state';
+import * as fromAuth from '@auth/state';
+import { AppState } from '@app/app.state';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -25,11 +23,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   private authenticated = false;
   private authSub: Subscription;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private store: Store<AppState>
-  ) {}
+  constructor(private router: Router, private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.ingredientSub = this.store
@@ -52,18 +46,17 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.authSub = this.authService.user.subscribe((user: User) => {
-      if (user) {
-        this.authenticated = true;
-      } else {
-        this.authenticated = false;
-      }
-    });
+    this.authSub = this.store
+      .select('auth')
+      .subscribe((state: fromAuth.AuthState) => {
+        this.authenticated = state.user !== null;
+      });
   }
 
   ngOnDestroy(): void {
     this.ingredientSub.unsubscribe();
     this.authSub.unsubscribe();
+    this.store.dispatch(new fromShoppingList.AbortEdit());
   }
 
   public onAddIngredient = (): void => {
@@ -75,13 +68,13 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const ingredient = new Ingredient(name, quantity, unit);
     if (this.editMode) {
       this.store.dispatch(
-        new slActions.EditIngredient({
+        new fromShoppingList.EditIngredient({
           ingredient: ingredient,
           index: this.ingredientIndex,
         })
       );
     } else {
-      this.store.dispatch(new slActions.AddIngredient(ingredient));
+      this.store.dispatch(new fromShoppingList.AddIngredient(ingredient));
     }
     this.editMode = false;
     this.form.reset();
@@ -92,7 +85,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       this.router.navigate(['/auth']);
       return;
     }
-    this.store.dispatch(new slActions.DeleteIngredient(this.ingredientIndex));
+    this.store.dispatch(
+      new fromShoppingList.DeleteIngredient(this.ingredientIndex)
+    );
     this.editMode = false;
     this.form.reset();
   };
@@ -101,7 +96,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.form.reset();
     this.editMode = false;
     this.store.dispatch(
-      new slActions.SelectIngredient({
+      new fromShoppingList.SelectIngredient({
         ingredient: null,
         index: -1,
       })

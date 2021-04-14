@@ -5,10 +5,10 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 
 import { HeaderComponent } from './header/header.component';
-import { AppRoutingModule } from './routing/app-routing.module';
-import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
-import { SharedResourceModule } from './shared/shared-resource.module';
-import { reducerMap } from './app.state';
+import { AppRoutingModule } from '@routing/app-routing.module';
+import { AuthInterceptor } from '@shared/interceptors/auth.interceptor';
+import { SharedResourceModule } from '@shared/shared-resource.module';
+import { reducerMap } from '@app/app.state';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],

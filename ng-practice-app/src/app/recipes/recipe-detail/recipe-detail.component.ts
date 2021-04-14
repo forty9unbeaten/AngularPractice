@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { Ingredient } from 'src/app/models/ingredient.model';
 
-import { Recipe } from 'src/app/models/recipe.model';
-import { RecipesService } from 'src/app/services/recipes.service';
-import * as slActions from '../../shopping-list/state/shopping-list.actions';
+import { Ingredient } from '@models/ingredient.model';
+import { Recipe } from '@models/recipe.model';
+import { RecipesService } from '@services/recipes.service';
+import * as fromShoppingList from '@shoppingList/state';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -61,7 +61,9 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   };
 
   public onAddToShoppingList = (): void => {
-    this.store.dispatch(new slActions.AddIngredients(this.recipe.ingredients));
+    this.store.dispatch(
+      new fromShoppingList.AddIngredients(this.recipe.ingredients)
+    );
     this.router.navigate(['/shopping-list']);
   };
 }

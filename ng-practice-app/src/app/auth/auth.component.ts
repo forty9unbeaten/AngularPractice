@@ -8,8 +8,8 @@ import {
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthResponse } from '../models/auth-response.model';
-import { AuthService } from '../services/auth.service';
+import { AuthResponse } from '@models/auth-response.model';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-auth',

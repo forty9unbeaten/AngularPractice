@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Ingredient } from 'src/app/models/ingredient.model';
-import { Recipe } from 'src/app/models/recipe.model';
-import { RecipesService } from 'src/app/services/recipes.service';
+
+import { Ingredient } from '@models/ingredient.model';
+import { Recipe } from '@models/recipe.model';
+import { RecipesService } from '@services/recipes.service';
 
 @Component({
   selector: 'app-recipe-edit',
