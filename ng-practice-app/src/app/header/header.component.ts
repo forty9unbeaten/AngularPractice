@@ -1,13 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { User } from '../models/user.model';
-import { AuthService } from '../services/auth.service';
+import { AppState } from '@app/app.state';
+import * as fromAuth from '@auth/state';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   public dataLoading = false;
@@ -15,21 +17,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authSubscription: Subscription;
   public isAuthenticated = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store<AppState>
+  ) {}
 
   ngOnInit(): void {
-
     this.authService.autoLogin();
-    
-    this.authSubscription = this.authService.user.subscribe(
-      (user: User) => {
-        if (user) {
+    this.authSubscription = this.store
+      .select('auth')
+      .subscribe((state: fromAuth.AuthState) => {
+        if (state.user) {
           this.isAuthenticated = true;
         } else {
           this.isAuthenticated = false;
         }
-      }
-    );
+      });
   }
 
   ngOnDestroy(): void {
@@ -40,7 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.isAuthenticated) {
       this.authService.logout();
     } else {
-      this.router.navigate(['/auth'])
+      this.router.navigate(['/auth']);
     }
-  }
+  };
 }
