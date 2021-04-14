@@ -1,5 +1,5 @@
-import { Ingredient } from 'src/app/models/ingredient.model';
-import * as slActions from './shopping-list.actions';
+import { Ingredient } from '@models/ingredient.model';
+import * as slActions from '@shoppingList/state/shopping-list.actions';
 
 export interface ShoppingListState {
   ingredients: Ingredient[];
@@ -8,7 +8,7 @@ export interface ShoppingListState {
 }
 
 const initialState: ShoppingListState = {
-  ingredients: [],
+  ingredients: [new Ingredient('Apples', 2, 'Pound')],
   selectedIngredient: null,
   selectedIndex: -1,
 };
@@ -72,6 +72,14 @@ export const shoppingListReducer = (
         ...state,
         selectedIngredient: action.payload.ingredient,
         selectedIndex: action.payload.index,
+      };
+    }
+
+    case slActions.ABORT_EDIT: {
+      return {
+        ...state,
+        selectedIngredient: null,
+        selectedIndex: -1,
       };
     }
 
